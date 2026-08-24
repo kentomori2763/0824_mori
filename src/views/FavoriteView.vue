@@ -1,9 +1,9 @@
 <script setup>
-  import FavoriteList from '@/components/FavoriteList.vue'
+  import CustomerList from '@/components/CustomerList.vue'
 </script>
 
 <template>
   <v-container>
-    <FavoriteList/>
+    <CustomerList/>
   </v-container>
 </template>

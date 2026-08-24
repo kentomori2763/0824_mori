@@ -20,13 +20,6 @@ const count = computed(() => store.CustomerCount)
 
 <template>
 <v-container>
-    <!--
-    <div v-if="totalElevation === 0" >
-                <p>あなたの挑戦を待ってます</p>
-                </div>
-        <div v-else>
-    <p>挑戦標高 : {{ totalElevation }} m</p><br>
-    -->
     <p>表示件数 : {{ count }} 件</p>
     <table border="1" class="mountains-list">
         <thead>
@@ -42,10 +35,7 @@ const count = computed(() => store.CustomerCount)
                 </tr>
             </tbody>
     </table><br>
-                    <!--<div class=vbtn>
-                    <v-btn  size="small" v-on:click="clearList">お気に入りを全削除  
-                    </v-btn> 
-                    </div>-->
+
                     
 </v-container>
 </template>

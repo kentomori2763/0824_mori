@@ -1,6 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { usePrefectureStore } from './stores/prefecture'
 
 </script>
 

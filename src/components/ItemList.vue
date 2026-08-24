@@ -8,11 +8,8 @@ const ItemName = ref('')
 const Price = ref('')
 
 // actionsを呼び出す処理
-//const mori = store.mori()
 onMounted(async () => {await store.readItemList()})
-//console.log("actions呼び出し")
 const count = computed(() => store.count)
-//const favo = computed(() => store.favo)
 
 const addDate =store.addData
 

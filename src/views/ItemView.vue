@@ -1,9 +1,9 @@
 <script setup>
-  import MountainList from '@/components/MountainList.vue'
+  import ItemList from '@/components/ItemList.vue'
 </script>
 
 <template>
   <v-container>
-    <MountainList/>
+    <ItemList/>
   </v-container>
 </template>
