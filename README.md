@@ -48,3 +48,4 @@ npm run lint
 "# 20260804MoriApp" 
 "# 20260804MoriApp" 
 "# 0824_mori" 
+"# 20262Q-mori-Front" 
