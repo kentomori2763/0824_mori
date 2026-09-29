@@ -5,27 +5,28 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/beverageIcon.png"
-      width="200"
-      height="200"
-    />
+    Y2加入者一覧作成ツール
       <nav>
-        <RouterLink to="/">商品管理メニュー</RouterLink>
-        <RouterLink to="/favorite">顧客管理メニュー</RouterLink>
-        <RouterLink to="/order">受注管理メニュー</RouterLink>
+        <RouterLink to="/">ファイルアップロード</RouterLink>
+        <RouterLink to="/regist">出力内容確認</RouterLink>
+        <RouterLink to="/order">作成履歴</RouterLink>
       </nav>
   
   </header>
+  <main class="app-main">
   <RouterView />
+  </main>
 </template>
 
 <style scoped>
 header {
-  line-height: 1.5;
-  max-height: 100vh;
+  position: sticky;
+  text-align:center;
+  padding:20px 0;
+  top:0;
+  background-color: white;
+  z-index: 1000;
+  border-bottom: 1px solid #ddd;
 }
 
 .logo {
@@ -34,10 +35,11 @@ header {
 }
 
 nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+  font: 16px;
 }
 
 nav a.router-link-exact-active {
@@ -47,6 +49,7 @@ nav a.router-link-exact-active:hover {
   background-color: transparent;
 }
 nav a {
+  flex:1;
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
@@ -54,29 +57,13 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
+.app-header {
+  text-align: center;
+  padding: 20px 0;
+}
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-  nav {
-    text-align: center;
-    margin-left: -1rem;
-    font-size: 1rem;
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-
-
+.app-main {
+  display: flex;
+  justify-content: center;
 }
 </style>

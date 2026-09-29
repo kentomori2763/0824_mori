@@ -1,9 +1,9 @@
 <script setup>
-  import CustomerList from '@/components/CustomerList.vue'
+  import UploadFile from '@/components/UploadFile.vue'
 </script>
 
 <template>
   <v-container>
-    <CustomerList/>
+    <UploadFile/>
   </v-container>
 </template>

@@ -1,67 +1,87 @@
 <script setup>
-import { computed,ref,onMounted} from 'vue'
-import { usePrefectureStore } from '../stores/prefecture'
+import { ref,onMounted} from 'vue'
+import { useBugStore } from '../stores/Upload'
 
-const store = usePrefectureStore()
+const store = useBugStore()
 // actionsを呼び出す処理
-const TotalPrice = computed(() => store.TotalPrice)
-const CustomerCode = ref('')
-const searchOrderByCusCode =store.searchOrderByCusCode
+const contractList = ref([])
+onMounted(async()=> {
+  try{
+    contractList.value=
+      await store.getContractList()
+  }finally{loading.value = false
+  }
+})
+
+const formatDate = (date) => {
+  if (!date) return ''
+
+  return new Date(date).toLocaleString('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+}
+
+const loading = ref(true)
 
 </script>
 
 <template>
 <v-container>
-    <v-row class="mb-3 mt-3" align="center" justify="center">
-    <v-sheet class="w-50" >
-    <v-text-field
-              class="ml-6 mr-6"
-              v-model="CustomerCode"
-              label="顧客コードを入力"
-              placeholder="顧客コードを入力…"
-              outlined
-            ></v-text-field>
-    </v-sheet>
-    </v-row>
-     <v-row class="mb-3 mt-3" align="center" justify="center">
-          入力内容　CustomerCode: {{ CustomerCode }} 
-          <v-btn
-            @click="searchOrderByCusCode(CustomerCode)"
-            dark
-            small
-            color="indigo"
-            class="ml-4"
-          >
-            集計
-          </v-btn>
-        </v-row>
-    <p>総受注額 : {{TotalPrice }} 円</p>
-    <table border="1" class="mountains-list">
-        <thead>
-            <tr class="top-label">
-                    <th>受注番号</th>
-                    <th>顧客名</th>
-                    <th>商品名</th>
-                    <th>価格</th>
-                    <th>数量</th>
-                    <th>合計金額</th>
-            </tr>   
-        </thead>
-            <tbody>
-                 <tr v-for="data in store.OrderList">
-                    <td>{{data.OrderNo}}</td>
-                    <td>{{data.CustomerName}}</td>
-                    <td>{{data.ItemName}}</td>
-                    <td>{{data.Price}}円</td>
-                    <td>{{data.Order_num}}個</td>
-                    <td>{{data.TotalPrice}}円</td>
-                </tr>
-            </tbody>
-    </table><br>
-                    <!--<div class=vbtn>
-                    <v-btn  size="small" v-on:click="clearList">お気に入りを全削除  
-                    </v-btn> 
-                    </div>-->
+
+  <div 
+  v-if="loading" 
+  class="d-flex justify-center mt-10">
+  <div class="table-width text-center">
+    <v-progress-circular
+    indeterminate
+    color="primary"
+    class="mb-3"/>
+    <div>
+    データを読込中です...
+    </div>
+    </div>
+  </div>
+  
+  <div v-else class="d-flex justify-center">
+    <v-table class="table-width">
+  <thead>
+    <tr>
+      <th>ファイル名</th>
+      <th>作成日時</th>
+      <th>ダウンロード</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr
+      v-for="contract in contractList"
+      :key="contract.id"
+    >
+      <td>
+        {{ contract.fileName }}
+      </td>
+
+      <td>
+        {{ formatDate(contract.createdAt) }}
+      </td>
+
+      <td>
+        <a
+          :href="contract.blobUrl"
+          target="_blank"
+        >
+          ダウンロードする
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</v-table>
+</div>
                     
 </v-container>
 </template>
@@ -82,5 +102,11 @@ p{
     margin: 0 auto;   
     text-align: center;
 }
+.table-width {
+  width: 900px;
+}
 
+th{
+  text-align: center !important;
+}
 </style>

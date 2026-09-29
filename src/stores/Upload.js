@@ -1,18 +1,20 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import axios, { create } from 'axios'
 import { isEmpty } from 'vuetify/lib/util/helpers.mjs'
 
-export const usePrefectureStore = defineStore('prefecture', {
+export const useBugStore = defineStore('bug', {
     state: () => ({
-        ItemList:[],
+        BugList:[],
         CustomerList:[],
         OrderList:[],
         ItemCode:'',
-        ItemName:''
+        ItemName:'',
+        ContractList:[],
+        SelectedFiles:[]
     }),
 
     getters:{
-        count:(state)=> state.ItemList.length,
+        //count:(state)=> state.ItemList.length,
         CustomerCount:(state)=> state.CustomerList.length,
         favo:(state)=>state.favoriteMountain,
         totalElevation:(state)=> {
@@ -39,12 +41,6 @@ export const usePrefectureStore = defineStore('prefecture', {
             console.log(res.data.List)
             this.CustomerList = res.data.List
         },
-        // async readOrderList(){
-        //     console.log("受注リスト起動開始")
-        //     const res = await axios.get(`https://m3h-mori-0812container.redplant-bb35adea.japaneast.azurecontainerapps.io/api/ORDER`)
-        //     console.log(res.data.List)
-        //     this.OrderList = res.data.List
-        // },
 
         async addData(ItemCode,ItemName,Price){
             if (!ItemCode || isNaN(ItemCode)) {
@@ -76,7 +72,85 @@ export const usePrefectureStore = defineStore('prefecture', {
                 }); 
             console.log(res.data.List);
              this.OrderList = res.data.List
-        }
+        },
 
+        async sendPdf(files){
+            if (!files) {
+            console.log("ファイルが選択されていません"); 
+            return;
+            }
+            const formData = new FormData()
+            for(let i=0;i<files.length;i++){
+                formData.append('files',files[i])
+                console.log(files[i].name);
+            }
+        try{
+            const res = await axios.post('https://m3h-mori-0812container.redplant-bb35adea.japaneast.azurecontainerapps.io/api/scan',formData
+            //https://m3h-mori-0812container.redplant-bb35adea.japaneast.azurecontainerapps.io
+            //     }
+            // }
+            )
+        console.log("成功");
+        console.log(res.data);
+        this.ContractList = res.data;
+        }catch(error){
+            console.error("アップロード失敗");
+            console.error(error);
+        }},
+
+async createExcel(requestData) {
+
+    if (!requestData) {
+        console.log("ファイルが選択されていません")
+        return
     }
-})
+
+    try {
+
+        // 保存先を先に選択
+        const handle = await window.showSaveFilePicker({
+            suggestedName: '法人名_Y2加入者一覧.xlsx'
+        })
+
+        const writable = await handle.createWritable()
+
+        // Excel生成API実行
+        const res = await axios.post(
+            'https://m3h-mori-0812container.redplant-bb35adea.japaneast.azurecontainerapps.io/api/scan/excel',
+            requestData,
+            {
+                responseType: 'blob'
+            }
+        )
+
+        const blob = new Blob(
+            [res.data],
+            {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }
+        )
+
+        // 保存
+        await writable.write(blob)
+        await writable.close()
+
+        this.ContractList = null
+
+    } catch (error) {
+        console.error("Excel作成失敗")
+        console.error(error)
+    }
+},
+        async getContractList() {
+            try {
+                const res = await axios.get(
+                    "https://m3h-mori-0812container.redplant-bb35adea.japaneast.azurecontainerapps.io/api/contracts"
+                )
+                console.log("取得結果：",res)
+                console.log("取得データ：",res.data)
+                return res.data
+        } catch (error) {
+            console.error(error)
+        }
+}
+}})

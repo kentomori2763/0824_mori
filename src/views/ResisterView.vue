@@ -1,9 +1,9 @@
 <script setup>
-  import ItemList from '@/components/ItemList.vue'
+  import Resister from '@/components/Resister.vue'
 </script>
 
 <template>
   <v-container>
-    <ItemList/>
+    <Resister/>
   </v-container>
 </template>

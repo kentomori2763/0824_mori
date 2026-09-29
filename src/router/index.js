@@ -1,20 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/ItemView.vue'
-import FavoriteList from '../views/FavoriteView.vue'
-import OrderList from '@/components/OrderList.vue'
+import UploadView from '../views/UploadView.vue'
+import Resister from '../views/ResisterView.vue'
+import OrderList from '../views/OrderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      name: 'upload',
+      component: UploadView,
     },
     {
-      path: '/favorite',
-      name: 'favorite',
-      component: FavoriteList, //購入画面を追加
+      path: '/regist',
+      name: 'regist',
+      component: Resister, //購入画面を追加
     },
     {
       path: '/order',
