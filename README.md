@@ -50,3 +50,4 @@ npm run lint
 "# 0824_mori" 
 "# 20262Q-mori-Front" 
 "# 20262Q-mori-Front" 
+"# 20262Q-mori-frontend2" 
